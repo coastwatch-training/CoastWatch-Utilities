@@ -14,7 +14,7 @@ The course material requires that you have the CoastWatch Utilities software ins
 
 ### Resources
 
-Throughout this course, we'll refer to sections of the [CoastWatch Utilities User's Guide](downloads/cwutils_ug_4_0_0.pdf) for documenation. You'll also need to download the [cw_utils_sample_data.zip](downloads/cw_utils_sample_data.zip) file that contains all the sample data for the course. Inside the ZIP file is a table of contents `00-Contents.txt` that describes all the data files — we'll use a subset of the data files in each unit.
+Throughout this course, we'll refer to sections of the [CoastWatch Utilities User's Guide](downloads/cwutils_ug_4_0_0.pdf) for documentation. You'll also need to download the [cw_utils_sample_data.zip](downloads/cw_utils_sample_data.zip) file that contains all the sample data for the course. Inside the ZIP file is a table of contents `00-Contents.txt` that describes all the data files — we'll use a subset of the data files in each unit.
 
 ### Table of Contents
 
