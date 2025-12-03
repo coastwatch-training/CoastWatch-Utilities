@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Markdown Viewer</title>
+
+    <!-- Marked (Markdown -> HTML) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- highlight.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- GitHub markdown styling -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css">
+
+    <style>
+      :root {
+        --max-width: 980px;
+        --accent: #0366d6;
+      }
+      html,body { height: 100%; margin: 0; background: #ffffff; color: #24292e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+      header { background: #f6f8fa; border-bottom: 1px solid #e1e4e8; padding: 10px 18px; display:flex; gap:12px; align-items:center; }
+      header .title { font-weight:600; color: var(--accent); }
+      header .controls { margin-left:auto; display:flex; gap:8px; align-items:center; }
+      header a.button { padding:6px 10px; background:#ffffff; border:1px solid #ddd; border-radius:6px; color:#0366d6; text-decoration:none; font-size:0.95rem; }
+      #content { box-sizing: border-box; padding:28px; max-width:var(--max-width); margin:24px auto; }
+      .markdown-body { font-size:16px; line-height:1.7; }
+      /* Limit large top-of-page icons/badges */
+      .markdown-body > img:first-child,
+      .markdown-body > p > img:first-child { max-width:160px; margin:0.4em auto 1rem; display:block; }
+      /* Make images responsive */
+      .markdown-body img { max-width:100%; height:auto; }
+      /* Make tables scroll on small screens */
+      .markdown-body table { display:block; width:100%; overflow:auto; }
+      /* Smaller monospace for inline code */
+      .markdown-body code { font-size:0.95em; }
+      /* Code blocks: rely on highlight.js styles */
+      pre { border-radius:6px; overflow:auto; }
+      .status { font-size:0.95rem; color:#666; margin-left:8px; }
+      .error { color:#b31d28; font-weight:600; padding:12px 18px; background:#fff5f5; border:1px solid #f5c2c7; border-radius:6px; max-width:var(--max-width); margin:20px auto; }
+      @media (max-width:700px) { header { padding:8px 12px; } #content { padding:16px; margin:12px; } }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="title">Markdown Viewer</div>
+      <div class="controls">
+        <a id="openRaw" class="button" target="_blank" rel="noopener">Open raw</a>
+        <a id="openRepo" class="button" target="_blank" rel="noopener">Open on GitHub</a>
+        <div id="status" class="status">Loading…</div>
+      </div>
+    </header>
+
+    <main id="content">
+      <article id="md" class="markdown-body">Loading...</article>
+    </main>
+
+    <script>
+      // Helpers
+      function elt(tag, attrs = {}) { const e = document.createElement(tag); Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v)); return e; }
+      function joinPath(base, rel) {
+        if (!rel) return base;
+        if (rel.startsWith('/')) return rel.slice(1);
+        const s = base.split('/');
+        s.pop(); // remove filename or trailing segment
+        const parts = rel.split('/');
+        for (const p of parts) {
+          if (p === '.' || p === '') continue;
+          if (p === '..') s.pop();
+          else s.push(p);
+        }
+        return s.join('/');
+      }
+      function isAbsoluteUrl(u) { return /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(u) || u.startsWith('//'); }
+
+      // Read params:
+      const params = new URLSearchParams(location.search);
+      // Two usage modes:
+      // 1) direct raw URL: ?url=https://raw.githubusercontent.com/...
+      // 2) repo mode: ?repo=owner/repo&file=path/to/file.md&branch=main
+      const rawParam = params.get('url');
+      const repoParam = params.get('repo'); // owner/repo
+      const fileParam = params.get('file'); // path like docs/lesson1.md or README.md
+      const branchParam = params.get('branch') || 'main';
+
+      // Fallback default - show README from your course repo if nothing provided
+      const defaultRepo = 'coastwatch-training/CoastWatch-Utilities';
+      const defaultFile = 'README.md';
+      const defaultBranch = 'main';
+
+      let rawUrl;
+      let githubUrl; // link to file on github web UI
+      let baseRawDir; // base directory for resolving relative links/images
+
+      if (rawParam) {
+        rawUrl = rawParam;
+        // attempt to derive base directory
+        baseRawDir = rawUrl.replace(/\/[^/]+$/, '/');
+      } else if (repoParam && fileParam) {
+        rawUrl = `https://raw.githubusercontent.com/${repoParam}/${branchParam}/${fileParam}`;
+        githubUrl = `https://github.com/${repoParam}/blob/${branchParam}/${fileParam}`;
+        baseRawDir = `https://raw.githubusercontent.com/${repoParam}/${branchParam}/${fileParam}`.replace(/\/[^/]+$/, '/');
+      } else {
+        // default to course README
+        rawUrl = `https://raw.githubusercontent.com/${defaultRepo}/${defaultBranch}/${defaultFile}`;
+        githubUrl = `https://github.com/${defaultRepo}/blob/${defaultBranch}/${defaultFile}`;
+        baseRawDir = rawUrl.replace(/\/[^/]+$/, '/');
+      }
+
+      const openRawBtn = document.getElementById('openRaw');
+      const openRepoBtn = document.getElementById('openRepo');
+      const statusEl = document.getElementById('status');
+
+      openRawBtn.href = rawUrl;
+      openRepoBtn.href = githubUrl || '#';
+
+      async function fetchAndRender(url) {
+        try {
+          statusEl.textContent = 'Fetching…';
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+          const md = await res.text();
+
+          statusEl.textContent = 'Rendering…';
+          // Render with marked
+          const html = marked.parse(md, { gfm: true, breaks: true });
+          const mdEl = document.getElementById('md');
+          mdEl.innerHTML = html;
+
+          // After rendering, rewrite relative links and image URLs:
+          // If the page was loaded via repo+file, prefer repo base; otherwise use baseRawDir
+          const repoMode = !!repoParam && !!fileParam;
+          const base = repoMode ? `https://raw.githubusercontent.com/${repoParam}/${branchParam}/` + (fileParam.includes('/') ? fileParam.replace(/\/[^/]*$/, '/') : '') : baseRawDir;
+
+          // Rewrite links: - if link to a .md file -> link to viewer.html with repo/file params
+          //                - if relative non-md -> point to raw content
+          document.querySelectorAll('#md a').forEach(a => {
+            const href = a.getAttribute('href') || '';
+            if (href.startsWith('#') || isAbsoluteUrl(href)) {
+              // external or fragment: if external open new tab
+              if (isAbsoluteUrl(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+              return;
+            }
+            // For relative links:
+            if (href.toLowerCase().endsWith('.md')) {
+              // navigate via viewer with repo/file mode if we have repo info, else construct raw URL if rawParam used
+              if (repoMode) {
+                const newPath = joinPath(fileParam, href);
+                a.href = `${location.pathname}?repo=${encodeURIComponent(repoParam)}&file=${encodeURIComponent(newPath)}&branch=${encodeURIComponent(branchParam)}`;
+              } else {
+                // convert to raw URL
+                const newRaw = joinPath(base, href);
+                a.href = `${location.pathname}?url=${encodeURIComponent(newRaw)}`;
+              }
+            } else {
+              // non-md relative link (images, other assets)
+              const newRaw = joinPath(base, href);
+              a.href = newRaw;
+              a.target = '_blank';
+              a.rel = 'noopener';
+            }
+          });
+
+          // Rewrite images
+          document.querySelectorAll('#md img').forEach(img => {
+            const src = img.getAttribute('src') || '';
+            if (isAbsoluteUrl(src)) return;
+            // If relative, make it point to raw host using same base path logic
+            const newSrc = joinPath(base, src);
+            img.src = newSrc;
+          });
+
+          // External links should open in new tab
+          document.querySelectorAll('#md a[href]').forEach(a => {
+            const href = a.getAttribute('href');
+            if (isAbsoluteUrl(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+          });
+
+          // Highlight code blocks
+          document.querySelectorAll('pre code').forEach(block => {
+            try { hljs.highlightElement(block); } catch (e) {}
+          });
+
+          statusEl.textContent = '';
+        } catch (err) {
+          document.getElementById('md').innerHTML = `<div class="error">Error loading markdown: ${err.message}</div>`;
+          statusEl.textContent = 'Error';
+          openRawBtn.href = rawUrl;
+        }
+      }
+
+      // Start
+      fetchAndRender(rawUrl);
+    </script>
+  </body>
+</html>
