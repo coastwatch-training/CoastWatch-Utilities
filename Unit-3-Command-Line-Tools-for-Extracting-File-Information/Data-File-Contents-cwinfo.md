@@ -10,7 +10,7 @@ You should see the file contents printed:
 
 The **cwinfo** tool lists global file attributes and the data variables in the file in a human-readable format. The tool also has a useful mode that prints the coordinates of the edges of the data, and its resolution:
 
-` cwinfo --transform example_goci2_reflect_jan_2023.hdf`
+`cwinfo --transform example_goci2_reflect_jan_2023.hdf`
 
 You should see the following:
 
