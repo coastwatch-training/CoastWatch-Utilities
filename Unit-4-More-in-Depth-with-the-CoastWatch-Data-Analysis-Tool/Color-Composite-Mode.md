@@ -5,12 +5,12 @@ Color composite mode is an alternate way of deriving the color values at each pi
 For this exercise we'll use the GK-2B Geostationary Ocean Color Imager II (GOCI-II) sensor data file `example_goci2_reflect_jan_2023.hdf`, and create a composite image as follows:
 
   1. Open the data file and load the **RhoC_620**, **RhoC_555**, and **RhoC_443** variables.
-  2. Select the **View | Enhancement** control tab.
+  2. Select the **View → Enhancement** control tab.
   3. For each variable: 
      - Select it using the variable selector above the data view.
      - Change the **Enhancement Range** to [0..1].
      - Change the **Enhancement Function** to **Gamma**.
-  4. Select the **View | Composite** control tab.
+  4. Select the **View → Composite** control tab.
   5. Set a different variable for each color component: 
      - **Red component** — RhoC_620
      - **Green component** — RhoC_555
