@@ -1,0 +1,135 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - downloads/**
+    - images/**
+
+website:
+  title: "The CoastWatch Utilities Online Course"
+  bread-crumbs: true
+  search:
+    location: sidebar
+    type: textbox
+  navbar:
+    left:
+      - text: "Welcome"
+        href: index.qmd
+      - text: "Intro Video"
+        href: https://www.youtube.com/watch?v=RJ8wqwYf8RU
+      - text: "Short Courses"
+        href: Suggested-Short-Courses.md
+      - text: "Skip To Quiz"
+        menu:
+          - text: "Unit 1"
+            href: Unit-1-Introduction-to-the-CoastWatch-Utilities/Unit-1-Quiz.md
+          - text: "Unit 2"
+            href: Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Unit-2-Quiz.md
+          - text: "Unit 3"
+            href: Unit-3-Command-Line-Tools-for-Extracting-File-Information/Unit-3-Quiz.md
+          - text: "Unit 4"
+            href: Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Unit-4-Quiz.md
+          - text: "Unit 5"
+            href: Unit-5-Command-Line-Tools-for-Data-Manipulation/Unit-5-Quiz.md
+      - text: "Skip to Assignment"
+        menu:
+          - text: "Unit 2"
+            href: Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Unit-2-Assignment.md
+          - text: "Unit 3"
+            href: Unit-3-Command-Line-Tools-for-Extracting-File-Information/Unit-3-Assignment.md
+          - text: "Unit 4"
+            href: Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Unit-4-Assignment.md
+          - text: "Unit 5"
+            href: Unit-5-Command-Line-Tools-for-Data-Manipulation/Unit-5-Assignment.md
+
+  sidebar:
+    style: docked
+    search: true
+    collapse-level: 1
+    contents:
+      - text: "Welcome"
+        href: index.qmd
+
+      - section: "Unit 1 - Introduction to the CoastWatch Utilities"
+        contents:
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/README.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/CoastWatch-Data-Files.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/Graphical-Versus-Command-Line.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/Software-Functionality.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/HDF-and-NetCDF-Software.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/Unit-1-Quiz.md
+          - Unit-1-Introduction-to-the-CoastWatch-Utilities/Unit-1-Quiz-Answers.md
+
+      - section: "Unit 2 - Basics of the CoastWatch Data Analysis Tool"
+        contents:
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/README.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Opening-a-Data-File.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Color-Palette-and-Enhancement-Range.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Data-Overlays.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Navigating-Within-the-Data-View.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Data-Export.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Unit-2-Assignment.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Unit-2-Quiz.md
+          - Unit-2-Basics-of-the-CoastWatch-Data-Analysis-Tool/Unit-2-Quiz-Answers.md
+
+      - section: "Unit 3 - Command Line Tools for Extracting File Information"
+        contents:
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/README.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Data-File-Contents-cwinfo.md
+          - text: "Rendering Images (cwrender)"
+            href: Unit-3-Command-Line-Tools-for-Extracting-File-Information/Rendering-Images-cwrender.md
+            contents:
+              - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Color-Enhancement-Images.md
+              - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Color-Composite-Images.md
+              - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Colored-Vector-Images.md
+              - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Hybrid-Images.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Statistics-Computations-cwstats.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Sampling-Locations-cwsample.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Data-Export-cwexport.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Unit-3-Assignment.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Unit-3-Quiz.md
+          - Unit-3-Command-Line-Tools-for-Extracting-File-Information/Unit-3-Quiz-Answers.md
+
+      - section: "Unit 4 - More in Depth with the CoastWatch Data Analysis Tool"
+        contents:
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/README.md
+          - text: "Mask Overlays"
+            href: Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Mask-Overlays.md
+            contents:
+              - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Bitmask-Overlays.md
+              - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Multilayer-Mask-Overlays.md
+              - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Expression-Mask-Overlays.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Topographic-and-Bathymetric-Contours.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Shape-Overlays.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Saving-and-Loading-Overlay-Groups.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Surveying-Data-Variables.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Drawing-Annotations.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Color-Composite-Mode.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Unit-4-Assignment.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Unit-4-Quiz.md
+          - Unit-4-More-in-Depth-with-the-CoastWatch-Data-Analysis-Tool/Unit-4-Quiz-Answers.md
+
+      - section: "Unit 5 - Command Line Tools for Data Manipulation"
+        contents:
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/README.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Generic-Variable-Math-cwmath.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Registration-to-a-Map-Projection-cwregister2.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Creating-Map-Projections-cwmaster.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Spatial-and-Temporal-Composites-cwcomposite.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Direct-Software-Library-Access-cwscript.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Automated-Data-Processing.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Unit-5-Assignment.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Unit-5-Quiz.md
+          - Unit-5-Command-Line-Tools-for-Data-Manipulation/Unit-5-Quiz-Answers.md
+
+      - text: "Suggested Short Courses"
+        href: Suggested-Short-Courses.md
+
+format:
+  html:
+    toc: true
+    toc-location: right
+    number-sections: false
+    page-layout: article
+    theme: cosmo
+    smooth-scroll: true
