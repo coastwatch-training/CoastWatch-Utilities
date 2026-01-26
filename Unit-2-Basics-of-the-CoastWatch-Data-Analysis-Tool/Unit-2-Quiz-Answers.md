@@ -46,7 +46,7 @@ The rendering order of data overlays cannot be altered.
 
 - [x] False
 
-**General feedback:** The data overlays act like layers and can be rendered in any order.  See the [Data Overlays](Data Overlays.md) page for example screenshots and instructions for rearranging overlay rendering.
+**General feedback:** The data overlays act like layers and can be rendered in any order.  See the [Data Overlays](Data-Overlays.md) page for example screenshots and instructions for rearranging overlay rendering.
 
 ### Question 5
 
